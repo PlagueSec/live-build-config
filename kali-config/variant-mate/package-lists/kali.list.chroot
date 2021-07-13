@@ -323,10 +323,10 @@ zim
 #<package>
 # You can customize the set of Kali metapackages (groups of tools) to install
 # For the complete list see: https://tools.kali.org/kali-metapackages
-# kali-linux-default
-# kali-linux-large
-# kali-linux-everything
+# kali-linux-core
 # kali-tools-top10
+# kali-linux-default
+# kali-linux-everything
 
 # Graphical desktop
 kali-desktop-mate

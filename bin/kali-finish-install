@@ -47,10 +47,19 @@ END
 
 plank_theme() {
     sudo mv /usr/share/PlagueSec-Dock-theme/dock.theme /usr/share/plank/themes/Default/dock.theme
+    # Added New Themes for Plank 
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_Day /usr/share/plank/themes
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_Day_Dark /usr/share/plank/themes
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_White /usr/share/plank/themes
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_Black /usr/share/plank/themes
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_Night_Line /usr/share/plank/themes
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_Night /usr/share/plank/themes
+
     sudo rm -r /usr/share/PlagueSec-Dock-theme
-    
-    # remove dock shadow on XFCE variant
+    sudo rm -r /usr/share/Dock_themes
+    # Plank Fix Shadows
     sudo xfconf-query --channel=xfwm4 --property=/general/show_dock_shadow --type=bool --toggle
+
 }
 
 get_user_list() {

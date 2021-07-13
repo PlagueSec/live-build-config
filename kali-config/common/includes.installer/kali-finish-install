@@ -20,9 +20,46 @@ configure_sources_list() {
 deb http://http.kali.org/kali kali-rolling main contrib non-free
 
 # Additional line for source packages
-# deb-src http://http.kali.org/kali kali-rolling main contrib non-free
+deb-src http://http.kali.org/kali kali-rolling main contrib non-free
 END
     apt-get update
+}
+
+wireless_adapter_compatibility() {
+    sudo rm /etc/network/interfaces
+    sudo mv /etc/network/interface /etc/network/interfaces
+
+    cat >/etc/network/interfaces <<END
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto wlan0
+END
+    apt-get update
+}
+
+plank_theme() {
+    sudo mv /usr/share/PlagueSec-Dock-theme/dock.theme /usr/share/plank/themes/Default/dock.theme
+    # Added New Themes for Plank 
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_Day /usr/share/plank/themes
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_Day_Dark /usr/share/plank/themes
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_White /usr/share/plank/themes
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_Black /usr/share/plank/themes
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_Night_Line /usr/share/plank/themes
+    sudo mv /usr/share/Dock_themes/mcOS_Mojave_Night /usr/share/plank/themes
+
+    sudo rm -r /usr/share/PlagueSec-Dock-theme
+    sudo rm -r /usr/share/Dock_themes
+    # Plank Fix Shadows
+    sudo xfconf-query --channel=xfwm4 --property=/general/show_dock_shadow --type=bool --toggle
+
 }
 
 get_user_list() {
@@ -51,17 +88,25 @@ configure_zsh() {
     done
 }
 
-configure_kaboxer() {
-    # Create the group if needed
-    addgroup --system kaboxer || true
+# This is generically named in case we want to add other groups in the future.
+configure_usergroups() {
+  # Create the kaboxer group if needed
+  addgroup --system kaboxer || true
+  addgroup --system kaboxer || true
 
-    # Add the users to the group
-    for user in $(get_user_list); do
-	echo "INFO: adding user '$user' to group 'kaboxer'"
-	adduser $user kaboxer || true
-    done
+  # kaboxer - for kaboxer
+  # dialout - for serial access
+  # wireshark - capture sessions without root permission
+  kali_groups="kaboxer,dialout,wireshark"
+
+  for user in $(get_user_list); do
+      echo "INFO: adding user '$user' to groups '$kali_groups'"
+      usermod -a -G "$kali_groups" $user || true
+  done
 }
 
 configure_sources_list
+wireless_adapter_compatibility
+plank_theme
 configure_zsh
-configure_kaboxer
+configure_usergroups

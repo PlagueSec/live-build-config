@@ -199,7 +199,6 @@ php
 php-mysql
 pipal
 pixiewps
-plank
 plecost
 polenum
 powercat
@@ -318,15 +317,16 @@ xsser
 yersinia
 zaproxy
 zim
+plank
 
 # Kali applications
 #<package>
 # You can customize the set of Kali metapackages (groups of tools) to install
 # For the complete list see: https://tools.kali.org/kali-metapackages
-# kali-linux-default
-# kali-linux-large
-# kali-linux-everything
+# kali-linux-core
 # kali-tools-top10
+# kali-linux-default
+# kali-linux-everything
 
 # Graphical desktop
 kali-desktop-xfce
